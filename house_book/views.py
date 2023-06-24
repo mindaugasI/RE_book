@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Type, Service, Object, Owner, Supplier, Invoice
 from datetime import datetime
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 def index(request):
     # Suskaičiuokime keletą pagrindinių objektų
@@ -36,6 +37,18 @@ def index(request):
 
     # renderiname index.html, su duomenimis kintamąjame context
     return render(request, 'index.html', context=context)
+
+def search(request):
+    """
+    paprasta paieška. query ima informaciją iš paieškos laukelio,
+    search_results prafiltruoja pagal įvestą pavadinimą,paslaugą ir objektą.
+    Icontains nuo contains skiriasi tuo, kad icontains ignoruoja ar raidės
+    didžiosios/mažosios.
+    """
+    query = request.GET.get('query')
+    search_results = Invoice.objects.filter(Q(invoice_supplier__supp_name__icontains=query) | Q(invoice_service__name__icontains=query)
+                                            | Q(invoice_object__obj_name__icontains=query))
+    return render(request, 'search.html', {'invoices': search_results, 'query': query})
 
 def objects(request):
     objects = Object.objects.all()
