@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Paslaugos</h1>
+  <p>Šiuo metu atliekamos paslaugos.</p>
+  {% for a in services %}
+    <li><a href="{% url 'service' a.id %}">{{a.name}}</a> </li>
+
+    {% endfor %}
+{% endblock %}

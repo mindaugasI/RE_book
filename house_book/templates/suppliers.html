@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Tiekėjai</h1>
+  <p>Šiuo metu registruoti tiekėjai.</p>
+  {% for a in suppliers %}
+    <li><a href="{% url 'supplier' a.id %}">{{a.supp_name}}</a> </li>
+        <ul>Paslauga: {{a.supp_service}}</ul>
+        <ul>Telefonas: {{ a.supp_phone }}</ul>
+        <ul>Elektroninis paštas: {{ a.supp_email }}</ul>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Objektai</h1>
+  <p>Šiuo metu registruoti objektai.</p>
+  {% for a in objects %}
+    <li><a href="{% url 'object' a.id %}">{{a.obj_name}}</a> </li>
+        <ul>Adresas: {{a.obj_address}}</ul>
+        <ul>Plotas: {{ a.obj_size }} m2</ul>
+        <ul>Tipas: {{ a.obj_type }}</ul>
+    {% endfor %}
+{% endblock %}

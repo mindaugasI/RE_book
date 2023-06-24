@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
-from datetime import date
+
+
 
 
 class Type(models.Model):
@@ -11,52 +12,19 @@ class Type(models.Model):
 
 class Service(models.Model):
     name = models.CharField('Paslaugos pavadinimas', max_length=20, help_text='Įveskite paslaugos pavadinimą (pvz. administravimas)')
+    service_description = models.CharField('Paslaugos apibūdinimas', max_length=1000, default='')
 
 
     def __str__(self):
         return self.name
 
-class Object(models.Model):
-    """Modelis reprezentuoja objektą (bet ne specifinį objektą)"""
-    obj_name = models.CharField('Pavadinimas', max_length=200)
-    obj_address = models.CharField('Adresas', max_length=200)
-    obj_size = models.FloatField('Plotas', max_length=1000, help_text='Objekto plotas, m2')
-    obj_type = models.ForeignKey('Type', on_delete=models.SET_NULL, null=True)
-
-    def __str__(self):
-        return self.obj_name
-
-    def get_absolute_url(self):
-        """Nurodo konkretaus aprašymo galinį adresą"""
-        return reverse('object-detail', args=[str(self.id)])
-
-    def display_type(self):
-        return self.obj_type
-
-    display_type.short_description = 'Objekto tipas'
-
-
-class Owner(models.Model):
-    """Modelis reprezentuoja savininką."""
-    first_name = models.CharField('Vardas', max_length=100)
-    last_name = models.CharField('Pavardė', max_length=100)
-
-    class Meta:
-        ordering = ['last_name', 'first_name']
-
-    def get_absolute_url(self):
-        """Nurodo konkretaus savininko galinį adresą."""
-        return reverse('owner-detail', args=[str(self.id)])
-
-    def __str__(self):
-        """Modelio objekto vaizdavimo eilutė."""
-        return f'{self.last_name} {self.first_name}'
-
-
 class Supplier(models.Model):
     """Modelis reprezentuoja paslaugos tiekėją."""
     supp_name = models.CharField('Pavadinimas', max_length=100)
     supp_service = models.ForeignKey('Service', on_delete=models.SET_NULL, null=True)
+    supp_phone = models.CharField('Telefonas', max_length=20, null=True)
+    supp_email = models.EmailField('El. paštas', max_length=50, null=True, db_column='El. paštas')
+
 
     def display_service(self):
         return self.supp_service.name
@@ -76,6 +44,48 @@ class Supplier(models.Model):
         return f'{self.supp_service} {self.supp_name}'
 
 
+class Object(models.Model):
+    """Modelis reprezentuoja objektą"""
+    obj_name = models.CharField('Pavadinimas', max_length=200)
+    obj_address = models.CharField('Adresas', max_length=200)
+    obj_size = models.FloatField('Plotas', max_length=1000, help_text='Objekto plotas, m2')
+    obj_type = models.ForeignKey('Type', on_delete=models.SET_NULL, null=True)
+    obj_description = models.CharField('Aprašymas', max_length=200, default='')
+    obj_services = models.ManyToManyField(Service, help_text='Pasirinkite paslaugas objektui')
+    obj_suppliers = models.ManyToManyField(Supplier, help_text='Pasirinkite tiekėjus objektui')
+
+    def __str__(self):
+        return self.obj_name
+
+    def get_absolute_url(self):
+        """Nurodo konkretaus aprašymo galinį adresą"""
+        return reverse('object-detail', args=[str(self.id)])
+
+    def display_type(self):
+        return self.obj_type
+
+    display_type.short_description = 'Objekto tipas'
+
+
+class Owner(models.Model):
+    """Modelis reprezentuoja savininką."""
+    first_name = models.CharField('Vardas', max_length=100)
+    last_name = models.CharField('Pavardė', max_length=100)
+    obj_owned = models.ManyToManyField(Object, help_text='Pasirinkite objektus')
+
+    class Meta:
+        ordering = ['last_name', 'first_name']
+
+    def get_absolute_url(self):
+        """Nurodo konkretaus savininko galinį adresą."""
+        return reverse('owner-detail', args=[str(self.id)])
+
+    def __str__(self):
+        """Modelio objekto vaizdavimo eilutė."""
+        return f'{self.last_name} {self.first_name}'
+
+
+
 class Invoice(models.Model):
     invoice_number = models.CharField('Sąskaitos numeris', max_length=100)
     invoice_date = models.DateField('Sąskaitos data')
@@ -83,6 +93,13 @@ class Invoice(models.Model):
     invoice_supplier = models.ForeignKey('Supplier', on_delete=models.SET_NULL, null=True)
     invoice_service = models.ForeignKey('Service', on_delete=models.SET_NULL, null=True)
     invoice_object = models.ForeignKey('Object', on_delete=models.SET_NULL, null=True)
+
+    STATUS = (('YES', 'Sumokėta'), ('NO', 'Nesumokėta'),)
+    invoice_status = models.CharField(max_length=3, choices=STATUS, default='NO', help_text='Sąskaitos statusas')
+    def display_status(self):
+        return self.invoice_status
+
+    display_status.short_description = 'Apmokėjimo statusas'
 
     PERIOD = (
         ('01', 'Sausis'),
