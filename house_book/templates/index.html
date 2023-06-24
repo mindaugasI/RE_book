@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Namų knyga</h1>
+  <p>Sveiki atvykę!</p>
+  <p>Šiuo metu aktualu:</p>
+  <ul>
+    <li><strong>Pastatų tipai:</strong> {{ num_types }}</li>
+    <li><strong>Visos paslaugos:</strong> {{ num_services }}</li>
+    <li><strong>Iš viso objektų:</strong> {{ num_objects }}</li>
+    <li><strong>Iš viso savininkų:</strong> {{ num_owners }}</li>
+    <li><strong>Paslaugų tiekėjai:</strong> {{ num_suppliers }}</li>
+    <li><strong>Iš viso sąskaitų:</strong> {{ num_invoices }}</li>
+    <li><strong>Iš viso neapmokėtų sąskaitų:</strong> {{ num_invoices_unpayed }}</li>
+    <li><strong>Iš viso sąskaitų už ataskaitinį laikotarpį:</strong> {{ num_invoices_period }}</li>
+  </ul>
+{% endblock %}

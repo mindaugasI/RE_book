@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container invoice">
+    <h4>Sąskaitos Nr.: {{ invoice.invoice_number }}, sąskaitos data: {{ invoice.invoice_date }}</h4>
+    <hr/>
+    <p>Sąskaitos suma: {{ invoice.invoice_sum }} Eur su PVM</p>
+    <p>Ataskaitinis periodas: {{ invoice.invoice_period }}</p>
+    <p>Apmokėjimo statusas: {{ invoice.invoice_status }}</p>
+    </hr>
+    </br>
+        <p>Paslaugos tiekėjas: {{ invoice.invoice_supplier }}</p>
+        <p>Paslauga: {{ invoice.invoice_service }}</p>
+        <p>Objektas: {{ invoice.invoice_object }}</p>
+    </div>
+{% endblock %}
