@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Type, Service, Object, Owner, Supplier, Invoice
 from datetime import datetime
+from django.core.paginator import Paginator
 
 def index(request):
     # Suskaičiuokime keletą pagrindinių objektų
@@ -49,9 +50,12 @@ def object(request, id):
     return render(request, 'object.html', {'object': single_object})
 
 def suppliers(request):
-    suppliers = Supplier.objects.all()
+    paginator = Paginator(Supplier.objects.all(), 3)
+    page_number = request.GET.get('page')
+    paged_suppliers = paginator.get_page(page_number)
+  #  suppliers = Supplier.objects.all()
     context = {
-        'suppliers':suppliers
+        'suppliers': paged_suppliers
     }
     return render(request, 'suppliers.html', context=context)
 
@@ -60,8 +64,11 @@ def supplier(request, id):
     return render(request, 'supplier.html', {'supplier': single_supplier})
 
 def invoices(request):
-    invoices = Invoice.objects.all()
-    return render(request, 'invoices.html', {'invoices': invoices})
+    paginator = Paginator(Invoice.objects.all(), 3)
+    page_number = request.GET.get('page')
+    paged_invoices = paginator.get_page(page_number)
+#    invoices = Invoice.objects.all()
+    return render(request, 'invoices.html', {'invoices': paged_invoices})
 
 def invoice(request, id):
     single_invoice = get_object_or_404(Invoice, pk=id)
@@ -72,5 +79,5 @@ def services(request):
     return render(request, 'services.html', {'services': services})
 
 def service(request, id):
-    single_service = get_object_or_404(Invoice, pk=id)
+    single_service = get_object_or_404(Service, pk=id)
     return render(request, 'service.html', {'service': single_service})

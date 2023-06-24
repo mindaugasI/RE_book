@@ -14,9 +14,9 @@ class Service(models.Model):
     name = models.CharField('Paslaugos pavadinimas', max_length=20, help_text='Įveskite paslaugos pavadinimą (pvz. administravimas)')
     service_description = models.CharField('Paslaugos apibūdinimas', max_length=1000, default='')
 
-
     def __str__(self):
         return self.name
+
 
 class Supplier(models.Model):
     """Modelis reprezentuoja paslaugos tiekėją."""
