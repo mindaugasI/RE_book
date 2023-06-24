@@ -9,4 +9,23 @@
         <ul>Telefonas: {{ a.supp_phone }}</ul>
         <ul>Elektroninis paštas: {{ a.supp_email }}</ul>
     {% endfor %}
+    <div class="container pages">
+        <nav aria-label="...">
+            {% if suppliers.has_other_pages %}
+                <ul class="pagination pagination-sm justify-content-end">
+                    {% for i in suppliers.paginator.page_range %}
+                        {% if suppliers.number == i %}
+                            <li class="page-item active">
+                                <a class="page-link">{{ i }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </nav>
+    </div>
 {% endblock %}
