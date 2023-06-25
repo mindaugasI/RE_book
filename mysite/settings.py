@@ -124,3 +124,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/'
+
+# MAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'smtp-mail.outlook.com'
+# EMAIL_POST = 587
+# EMAIL_USE_TLS = True
+# # email from which it will be sent
+# EMAIL_HOST_USER = config('EMAIL_ADDRESS')
+# # password
+# EMAIL_HOST_PASSWORD = config('EMAIL_PASS')
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
