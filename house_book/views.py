@@ -4,6 +4,8 @@ from .models import Type, Service, Object, Owner, Supplier, Invoice
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import generic
 
 def index(request):
     # Suskaičiuokime keletą pagrindinių objektų
@@ -100,3 +102,12 @@ def services(request):
 def service(request, id):
     single_service = get_object_or_404(Service, pk=id)
     return render(request, 'service.html', {'service': single_service})
+
+
+class ObjectsOwnedByUserListView(LoginRequiredMixin, generic.ListView):
+    model = Object
+    template_name = 'user_objects.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Object.objects.filter(obj_owner=self.request.user)
