@@ -14,6 +14,10 @@ def index(request):
     num_suppliers = Supplier.objects.all().count()
     num_invoices = Invoice.objects.all().count()
 
+    # Apsilakymo sesiju skaiciavimas
+    num_visits = request.session.get('num_visits', 1)
+    request.session['num_visits'] = num_visits + 1
+
     # Neapmokėtos sąskaitos (tos, kurios turi statusą 'NO')
     num_invoices_unpayed = Invoice.objects.filter(invoice_status__exact='NO').count()
 
@@ -33,6 +37,7 @@ def index(request):
         'num_invoices': num_invoices,
         'num_invoices_unpayed': num_invoices_unpayed,
         'num_invoices_period': num_invoices_period,
+        'num_visits': num_visits,
     }
 
     # renderiname index.html, su duomenimis kintamąjame context
