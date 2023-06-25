@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 
@@ -53,6 +54,7 @@ class Object(models.Model):
     obj_description = models.CharField('Aprašymas', max_length=200, default='')
     obj_services = models.ManyToManyField(Service, help_text='Pasirinkite paslaugas objektui')
     obj_suppliers = models.ManyToManyField(Supplier, help_text='Pasirinkite tiekėjus objektui')
+    obj_owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.obj_name

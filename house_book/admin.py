@@ -5,7 +5,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('display_status', 'display_period', 'invoice_date', 'invoice_sum', 'display_service')
 
 class ObjectAdmin(admin.ModelAdmin):
-    list_display = ('obj_name', 'obj_address', 'display_type')
+    list_display = ('obj_name', 'obj_address', 'display_type', 'obj_owner')
 
 class SupplierAdmin(admin.ModelAdmin):
     list_display = ('supp_name', 'display_service')
