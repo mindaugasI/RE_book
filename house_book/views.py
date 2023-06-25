@@ -49,6 +49,7 @@ def search(request):
     search_results = Invoice.objects.filter(Q(invoice_supplier__supp_name__icontains=query) | Q(invoice_service__name__icontains=query)
                                             | Q(invoice_object__obj_name__icontains=query))
     return render(request, 'search.html', {'invoices': search_results, 'query': query})
+# TODO papilvyti foto pridejimo funkcija.
 
 def objects(request):
     objects = Object.objects.all()
