@@ -20,6 +20,11 @@
           <li><a href="{% url 'suppliers' %}">Visos įmonės</a></li>
           <li><a href="{% url 'services' %}">Visos paslaugos</a></li>
           <li><a href="{% url 'invoices' %}">Visos sąskaitos</a></li>
+          <li>
+              <form action="{% url 'search' %}" method="get" class="form-inline my-2 my-md-0">
+              <input name="query" class="form-control" type="text" placeholder="Paieška">
+              </form>
+          </li>
         </ul>
      {% endblock %}
       </div>
