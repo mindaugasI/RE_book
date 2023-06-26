@@ -1,6 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Type, Service, Object, Owner, Supplier, Invoice
+from .models import Type, Service, Object, Owner, Supplier, Invoice, InvoiceStatus
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -61,6 +62,7 @@ def search(request):
     return render(request, 'search.html', {'invoices': search_results, 'query': query})
 # TODO papilvyti foto pridejimo funkcija.
 
+@login_required
 def objects(request):
     objects = Object.objects.all()
     context = {
@@ -69,51 +71,48 @@ def objects(request):
     print(objects)
     return render(request, 'objects.html', context=context)
 
+@login_required
 def object(request, id):
     single_object = get_object_or_404(Object, pk=id)
     return render(request, 'object.html', {'object': single_object})
 
+
 def suppliers(request):
-    paginator = Paginator(Supplier.objects.all(), 3)
-    page_number = request.GET.get('page')
-    paged_suppliers = paginator.get_page(page_number)
-  #  suppliers = Supplier.objects.all()
+    suppliers = Supplier.objects.all()
     context = {
-        'suppliers': paged_suppliers
+        'suppliers': suppliers
     }
     return render(request, 'suppliers.html', context=context)
+
 
 def supplier(request, id):
     single_supplier = get_object_or_404(Supplier, pk=id)
     return render(request, 'supplier.html', {'supplier': single_supplier})
 
+@login_required
 def invoices(request):
-    paginator = Paginator(Invoice.objects.all(), 3)
-    page_number = request.GET.get('page')
-    paged_invoices = paginator.get_page(page_number)
-#    invoices = Invoice.objects.all()
-    return render(request, 'invoices.html', {'invoices': paged_invoices})
+    invoices = Invoice.objects.all()
+    return render(request, 'invoices.html', {'invoices': invoices})
 
+@login_required
 def invoice(request, id):
     single_invoice = get_object_or_404(Invoice, pk=id)
     return render(request, 'invoice.html', {'invoice': single_invoice})
+
+@login_required
+def unpayed(request):
+    not_payed_invoices = Invoice.objects.all()
+    return render(request, 'unpayed.html', {'unpayed': not_payed_invoices})
 
 def services(request):
     services = Service.objects.all()
     return render(request, 'services.html', {'services': services})
 
+
 def service(request, id):
     single_service = get_object_or_404(Service, pk=id)
     return render(request, 'service.html', {'service': single_service})
 
-
-class ObjectsOwnedByUserListView(LoginRequiredMixin, ListView):
-    model = Object
-    template_name = 'user_objects.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return Object.objects.filter(obj_owner=self.request.user)
 
 # Registracijos funkcija
 @csrf_protect

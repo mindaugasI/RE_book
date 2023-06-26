@@ -15,5 +15,5 @@ urlpatterns = [
     path('invoices/<int:id>', views.invoice, name='invoice'),
     path('services/', views.services, name='services'),
     path('services/<int:id>', views.service, name='service'),
-    path('myobjects/', views.ObjectsOwnedByUserListView.as_view(), name='my-objects'),
+    path('unpayed/', views.unpayed, name='unpayed'),
 ]
