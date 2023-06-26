@@ -1,14 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
-from .models import Type, Service, Object, Owner, Supplier, Invoice, InvoiceStatus
+from .models import Type, Service, Object, Owner, Supplier, Invoice
 from datetime import datetime
-from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import User
-from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_protect
 from .forms import UserUpdateForm, ProfileUpdateForm
 
@@ -61,7 +57,7 @@ def search(request):
     search_results = Invoice.objects.filter(Q(invoice_supplier__supp_name__icontains=query) | Q(invoice_service__name__icontains=query)
                                             | Q(invoice_object__obj_name__icontains=query))
     return render(request, 'search.html', {'invoices': search_results, 'query': query})
-# TODO papilvyti foto pridejimo funkcija.
+# TODO papildyti foto pridejimo funkcija.
 
 @login_required
 def objects(request):
