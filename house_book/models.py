@@ -26,7 +26,6 @@ class Supplier(models.Model):
     supp_phone = models.CharField('Telefonas', max_length=20, null=True)
     supp_email = models.EmailField('El. paštas', max_length=50, null=True, db_column='El. paštas')
 
-
     def display_service(self):
         return self.supp_service.name
 
@@ -68,6 +67,9 @@ class Object(models.Model):
 
     display_type.short_description = 'Objekto tipas'
 
+    def display_supplier(self):
+        return self.obj_suppliers
+
 
 class Owner(models.Model):
     """Modelis reprezentuoja savininką."""
@@ -95,13 +97,26 @@ class Invoice(models.Model):
     invoice_supplier = models.ForeignKey('Supplier', on_delete=models.SET_NULL, null=True)
     invoice_service = models.ForeignKey('Service', on_delete=models.SET_NULL, null=True)
     invoice_object = models.ForeignKey('Object', on_delete=models.SET_NULL, null=True)
+    invoice_owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     STATUS = (('YES', 'Sumokėta'), ('NO', 'Nesumokėta'),)
-    invoice_status = models.CharField(max_length=3, choices=STATUS, default='NO', help_text='Sąskaitos statusas')
+    invoice_status = models.CharField(max_length=10, choices=STATUS, default='NO', help_text='Sąskaitos statusas')
     def display_status(self):
         return self.invoice_status
 
     display_status.short_description = 'Apmokėjimo statusas'
+    def display_payed(self):
+        if self.invoice_status == 'YES':
+            return 'APMOKĖTA'
+        else:
+            return 'NEAPMOKĖTA'
+
+    def display_not_payed(self):
+        total = 0
+        if self.invoice_status == 'NO':
+            total += self.invoice_sum
+        return total
+
 
     PERIOD = (
         ('01', 'Sausis'),
@@ -135,5 +150,10 @@ class Invoice(models.Model):
 
 
     def __str__(self):
-        return f'{self.invoice_period} - {self.invoice_date} - {self.invoice_service}'
+        return f'{self.invoice_period} - {self.invoice_date} - {self.invoice_service} {self.display_not_payed}'
 
+class InvoiceStatus(models.Model):
+    status = models.ForeignKey(Invoice, on_delete=models.SET_NULL, null=True, blank=True)
+ #   invoice_owner = models.ForeignKey(Invoice, on_delete=models.SET_NULL, null=True, blank=True)
+    def __str__(self):
+        return {self.status}
