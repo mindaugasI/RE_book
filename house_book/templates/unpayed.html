@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Page under construction...</h1>
-    <h2>Neapmoketos saskaitos</h2>
+    <h1>Neapmoketos saskaitos</h1>
 
 {{ unpayed.display_not_payed }}
 {% for invoice in unpayed %}
-    <p>Skola: {{ invoice.display_not_payed }}</p>
+<p>Skola - <strong>{{ invoice.display_not_payed }} EUR</strong> - {{ invoice.invoice_number }} - {{ invoice.invoice_date }}</p>
 {% endfor %}
 
 {% endblock %}

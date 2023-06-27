@@ -2,12 +2,13 @@
 
 {% block content %}
     <div class="container object">
-    <h4>{{ object.obj_name }} {{ object.obj_address }}</h4>
+        <h3>Pavadinimas: {{ object.obj_name }}</h3>
+        <h4>Adresas: {{ object.obj_address }}</h4>
     <hr/>
-    <p>{{ object.obj_size }} m2</p>
+    <p>Objekto plotas: {{ object.obj_size }} m2</p>
     </hr>
     </br>
-        <p>{{ object.obj_description }}</p>
+        <p>Objekto aprašymas: {{ object.obj_description }}</p>
 
     </div>
 {% endblock %}
