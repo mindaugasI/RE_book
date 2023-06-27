@@ -9,7 +9,7 @@
         <li><a href="{% url 'invoice' a.id %}">{{a.invoice_number}}</a> </li>
         <ul>Sąskaitos paslauga: <strong>{{a.invoice_service}}</strong></ul>
         <ul>Išrašymo data: {{a.invoice_date}}</ul>
-        <ul>Sąskaitos suma: {{ a.invoice_sum }}</ul>
+        <ul>Sąskaitos suma: {{ a.invoice_sum }} EUR</ul>
         <ul>Ataskaitinis laikotarpis: {{ a.invoice_period }}
         </ul>
         {% endif %}

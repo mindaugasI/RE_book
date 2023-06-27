@@ -4,21 +4,23 @@ from django.contrib.auth.models import User
 from PIL import Image
 
 
-
+# Objekto tipas
 class Type(models.Model):
     name = models.CharField('Objekto tipas', max_length=20, help_text='Įveskite objekto tipą (pvz. butas)')
 
     def __str__(self):
         return self.name
 
+# Paslaugu sarasas
 class Service(models.Model):
-    name = models.CharField('Paslaugos pavadinimas', max_length=20, help_text='Įveskite paslaugos pavadinimą (pvz. administravimas)')
+    name = models.CharField('Paslaugos pavadinimas', max_length=20,
+                            help_text='Įveskite paslaugos pavadinimą (pvz. administravimas)')
     service_description = models.CharField('Paslaugos apibūdinimas', max_length=1000, default='')
 
     def __str__(self):
         return self.name
 
-
+# Tiekeju sarasas
 class Supplier(models.Model):
     """Modelis reprezentuoja paslaugos tiekėją."""
     supp_name = models.CharField('Pavadinimas', max_length=100)
@@ -43,7 +45,7 @@ class Supplier(models.Model):
         """Modelio objekto vaizdavimo eilutė."""
         return f'{self.supp_service} {self.supp_name}'
 
-
+# Objektu sarasas
 class Object(models.Model):
     """Modelis reprezentuoja objektą"""
     obj_name = models.CharField('Pavadinimas', max_length=200)
@@ -70,7 +72,7 @@ class Object(models.Model):
     def display_supplier(self):
         return self.obj_suppliers
 
-
+# Savininku sarasas
 class Owner(models.Model):
     """Modelis reprezentuoja savininką."""
     first_name = models.CharField('Vardas', max_length=100)
@@ -89,7 +91,7 @@ class Owner(models.Model):
         return f'{self.last_name} {self.first_name}'
 
 
-
+# Saskaitu sarasas
 class Invoice(models.Model):
     invoice_number = models.CharField('Sąskaitos numeris', max_length=100)
     invoice_date = models.DateField('Sąskaitos data')
@@ -132,7 +134,8 @@ class Invoice(models.Model):
         ('11', 'Lapkritis'),
         ('12', 'Gruodis'),
     )
-    invoice_period = models.CharField(max_length=2, choices=PERIOD, default='01', blank=True, help_text='Paslaugos periodas')
+    invoice_period = models.CharField(max_length=2, choices=PERIOD, default='01',
+                                      blank=True, help_text='Paslaugos periodas')
     def display_period(self):
         return self.invoice_period
 
@@ -152,12 +155,13 @@ class Invoice(models.Model):
     def __str__(self):
         return f'{self.invoice_period} - {self.invoice_date} - {self.invoice_service}'
 
-class InvoiceStatus(models.Model):
-    status = models.ForeignKey(Invoice, on_delete=models.SET_NULL, null=True, blank=True)
- #   invoice_owner = models.ForeignKey(Invoice, on_delete=models.SET_NULL, null=True, blank=True)
-    def __str__(self):
-        return {self.status}
+# class InvoiceStatus(models.Model):
+#     status = models.ForeignKey(Invoice, on_delete=models.SET_NULL, null=True, blank=True)
+#  #   invoice_owner = models.ForeignKey(Invoice, on_delete=models.SET_NULL, null=True, blank=True)
+#     def __str__(self):
+#         return {self.status}
 
+# Vartotojo profilis
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     photo = models.ImageField(default="default.png", upload_to="profile_pics")
