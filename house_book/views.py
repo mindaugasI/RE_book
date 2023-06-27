@@ -54,7 +54,8 @@ def search(request):
     didžiosios/mažosios.
     """
     query = request.GET.get('query')
-    search_results = Invoice.objects.filter(Q(invoice_supplier__supp_name__icontains=query) | Q(invoice_service__name__icontains=query)
+    search_results = Invoice.objects.filter(Q(invoice_supplier__supp_name__icontains=query)
+                                            | Q(invoice_service__name__icontains=query)
                                             | Q(invoice_object__obj_name__icontains=query))
     return render(request, 'search.html', {'invoices': search_results, 'query': query})
 # TODO papildyti foto pridejimo funkcija.
