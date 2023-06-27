@@ -150,7 +150,7 @@ class Invoice(models.Model):
 
 
     def __str__(self):
-        return f'{self.invoice_period} - {self.invoice_date} - {self.invoice_service} {self.display_not_payed}'
+        return f'{self.invoice_period} - {self.invoice_date} - {self.invoice_service}'
 
 class InvoiceStatus(models.Model):
     status = models.ForeignKey(Invoice, on_delete=models.SET_NULL, null=True, blank=True)
