@@ -4,12 +4,7 @@
     <h1>Page under construction...</h1>
     <h2>Neapmoketos saskaitos</h2>
 
-{{ unpayed.display_not_payed }}
-{% for invoice in unpayed %}
-    {% if total != 0 %}
-        <p>Skola: {{ invoice.invoice_sum }}</p>
+{{ not_payed_invoices.display_not_payed }}
 
-    {% endif %}
-{% endfor %}
 
 {% endblock %}
