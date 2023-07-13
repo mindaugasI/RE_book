@@ -117,6 +117,8 @@ class Invoice(models.Model):
         total = 0
         if self.invoice_status == 'NO':
             total += self.invoice_sum
+        else:
+            pass
         return total
 
 

@@ -6,7 +6,10 @@
 
 {{ unpayed.display_not_payed }}
 {% for invoice in unpayed %}
-    <p>Skola: {{ invoice.display_not_payed }}</p>
+    {% if total != 0 %}
+        <p>Skola: {{ invoice.invoice_sum }}</p>
+
+    {% endif %}
 {% endfor %}
 
 {% endblock %}
