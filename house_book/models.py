@@ -114,10 +114,10 @@ class Invoice(models.Model):
             return 'NEAPMOKĖTA'
 
     def display_not_payed(self):
-        total = 0
         if self.invoice_status == 'NO':
-            total += self.invoice_sum
-        return total
+            return f"{self.invoice_date} - {self.invoice_service} - {self.invoice_sum}"
+        else:
+            pass
 
 
     PERIOD = (
