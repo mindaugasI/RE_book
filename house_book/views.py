@@ -62,7 +62,7 @@ def search(request):
 
 @login_required
 def objects(request):
-    objects = Object.objects.all()
+    objects = Object.objects.filter(obj_owner=request.user)
     context = {
         'objects': objects
     }
@@ -99,7 +99,7 @@ def invoice(request, id):
 
 @login_required
 def unpayed(request):
-    not_payed_invoices = Invoice.objects.all()
+    not_payed_invoices = Invoice.objects.filter(invoice_status='NO')
     return render(request, 'unpayed.html', {'unpayed': not_payed_invoices})
 
 def services(request):
